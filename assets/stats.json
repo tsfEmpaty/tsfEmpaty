@@ -1,0 +1,88 @@
+{
+  "repos": {
+    "tsfEmpaty/Algorithms": {
+      "stars": 1,
+      "forks": 0,
+      "language": "Python",
+      "license": "MIT",
+      "branch": "main"
+    },
+    "tsfEmpaty/logseq-aura-dark-theme": {
+      "stars": 1,
+      "forks": 0,
+      "language": "CSS",
+      "license": "NOASSERTION",
+      "branch": "main"
+    }
+  },
+  "algorithms": {
+    "total": 23,
+    "by_diff": {
+      "easy": 15,
+      "medium": 4,
+      "hard": 3
+    },
+    "by_source": {
+      "algoexpert": 22,
+      "grokking_algorithms": 1,
+      "leetcode": 0,
+      "neetcode": 0,
+      "codewars": 0
+    },
+    "showcase": [
+      {
+        "path": "algoexpert/easy/NthFibonacci",
+        "name": "Nth Fibonacci",
+        "difficulty": "easy",
+        "complexity": "O(n) time | O(1) space",
+        "code": [
+          "def getNthFib(n):",
+          "    a, b = 0, 1",
+          "    for _ in range(n - 1):",
+          "        a, b = b, a + b",
+          "    return a"
+        ]
+      },
+      {
+        "path": "algoexpert/medium/LongestPeak",
+        "name": "Longest Peak",
+        "difficulty": "medium",
+        "complexity": "O(n) time | O(1) space",
+        "code": [
+          "def longestPeak(array):",
+          "    longestPeakLength = 0",
+          "    i = 1",
+          "    while i < len(array) - 1:",
+          "        isPeak = array[i - 1] < array[i] and array[i] > array[i + 1]",
+          "        if not isPeak:",
+          "            i += 1",
+          "            continue",
+          "",
+          "        leftIdx = i - 2",
+          "        while leftIdx >= 0 and array[leftIdx] < array[leftIdx + 1]:",
+          "            leftIdx -= 1"
+        ]
+      },
+      {
+        "path": "algoexpert/hard/ShiftLinkedList",
+        "name": "Shift Linked List",
+        "difficulty": "hard",
+        "complexity": "O(n) time | O(1) space",
+        "code": [
+          "def shiftLinkedList(head, k):",
+          "    listLength = 1",
+          "    listTail = head",
+          "    while listTail.next is not None:",
+          "        listTail = listTail.next",
+          "        listLength += 1",
+          "",
+          "    offset = abs(k) % listLength",
+          "    if offset == 0:",
+          "        return head",
+          "",
+          "    newTailPosition = listLength - offset if k > 0 else offset"
+        ]
+      }
+    ]
+  }
+}

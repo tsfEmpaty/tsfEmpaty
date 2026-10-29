@@ -1,11 +1,14 @@
 name: profile engine
 
 # Правишь config/profile.toml или код движка → GitHub сам пересобирает SVG
-# и коммитит их вместе с обновлённым README.
+# и коммитит их вместе с обновлённым README. Раз в день — то же самое ради живой
+# статистики проектов (коммит будет, только если цифры правда поменялись).
 on:
   push:
     branches: [main]
     paths: ["config/**", "engine/**"]
+  schedule:
+    - cron: "17 4 * * *"
   workflow_dispatch:
 
 permissions:
@@ -26,6 +29,8 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python -m engine build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # выше лимит GitHub API
       - name: Commit regenerated cards
         run: |
           git config user.name  "profile-engine"

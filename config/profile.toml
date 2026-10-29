@@ -76,3 +76,29 @@ color = "pink"
 label = "status"
 value = "open to offers"
 color = "dark"
+
+# ── проекты ──────────────────────────────────────────────────────────────────
+# Цифры (решённые задачи, звёзды) и код решений движок берёт из GitHub API при сборке;
+# Action пересобирает раз в день. Последний снимок — assets/stats.json.
+
+[algorithms]
+repo = "tsfEmpaty/Algorithms"
+tagline = "Classic patterns, not memorized answers"
+# папка-источник в репо → подпись на карточке (порядок = порядок чипов)
+sources = { algoexpert = "AlgoExpert", grokking_algorithms = "Grokking", leetcode = "LeetCode", neetcode = "NeetCode", codewars = "Codewars" }
+# задачи, которые карточка по очереди «сабмитит» (папка с solution*.py)
+showcase = [
+  "algoexpert/easy/NthFibonacci",
+  "algoexpert/medium/LongestPeak",
+  "algoexpert/hard/ShiftLinkedList",
+]
+
+[aura]
+repo = "tsfEmpaty/logseq-aura-dark-theme"
+title = "Aura Dark for Logseq"
+# блок, который печатается и стирается по кругу; {stars} подставляется из API
+typing = [
+  "Install: [[Marketplace]] > Themes > \"Aura Dark\"",
+  "Switch theme with `t i` #shortcut",
+  "{stars} stars on #github so far",
+]

@@ -9,7 +9,9 @@ plain attribute, so a viewer without animation still sees a complete frame.
 from __future__ import annotations
 
 import base64
+import html
 import io
+import re
 from pathlib import Path
 
 from fontTools import subset
@@ -47,7 +49,8 @@ def font_css(text: str, faces=((400, "normal"), (700, "normal"))) -> str:
     """@font-face rules with the faces subset to exactly the characters used."""
     rules = []
     for weight, style in faces:
-        f = TTFont(FONT_DIR / _FACES[(weight, style)])
+        # recalcTimestamp=False: same text → byte-identical SVG, so CI commits only real changes
+        f = TTFont(FONT_DIR / _FACES[(weight, style)], recalcTimestamp=False)
         opts = subset.Options()
         opts.flavor = "woff2"
         opts.layout_features = []
@@ -114,6 +117,44 @@ class Timeline:
 
 def _fmt(v) -> str:
     return f"{v:.2f}".rstrip("0").rstrip(".") if isinstance(v, float) else str(v)
+
+
+def intervals(changes: list[tuple[float, object]], P: float) -> dict:
+    """[(t, value)] state changes → {value: [(start, end), ...]}."""
+    ch = sorted(changes, key=lambda c: c[0])
+    out: dict = {}
+    for k, (t, v) in enumerate(ch):
+        end = ch[k + 1][0] if k + 1 < len(ch) else P + 1
+        if end > t:
+            out.setdefault(v, []).append((t, end))
+    return out
+
+
+# ── text ─────────────────────────────────────────────────────────────────────
+def tok_text(x, y, tokens, extra=""):
+    """One <text> of coloured tokens: (text, colour[, 'b'|'i'|'bi'])."""
+    spans = []
+    for tok in tokens:
+        text, col = tok[0], tok[1]
+        style = tok[2] if len(tok) > 2 else ""
+        a = ' font-weight="700"' if "b" in style else ""
+        a += ' font-style="italic"' if "i" in style else ""
+        spans.append(f'<tspan fill="{col}"{a}>{esc(text)}</tspan>')
+    return f'<text x="{x:.1f}" y="{y:.1f}"{extra}>{"".join(spans)}</text>'
+
+
+def plain(markup: str) -> str:
+    """Characters that actually end up as text (rough: strip tags)."""
+    return html.unescape(re.sub(r"<[^>]+>", "", markup))
+
+
+def body_fonts(body: str, faces=((400, "normal"), (700, "normal"))) -> str:
+    """font_css for whatever text the finished body contains; warns about glyphs the font lacks."""
+    text = plain(body)
+    miss = missing_glyphs(text)
+    if miss:
+        print(f"  ! нет в шрифте: {''.join(sorted(miss))}")
+    return font_css(text, faces)
 
 
 def svg(w: float, h: float, label: str, css: str, defs: str, body: str) -> str:

@@ -7,12 +7,23 @@ pip install -r requirements.txt
 python -m engine build                 # все карточки + обновить README
 python -m engine build --only nvim     # только одна карточка, README обновится только для неё
 python -m engine build --no-readme     # всё, но README не трогать
+python -m engine build --offline       # без GitHub API: цифры проектов из assets/stats.json
 ```
 
 ## Как устроено
 
-* `config/profile.toml` — весь текст: имя, грейд, стек, фразы для `now`, клавиши.
-  Обновить профиль = поправить этот файл.
+* `config/profile.toml` — весь текст: имя, грейд, стек, фразы для `now`, клавиши,
+  репозитории проектов. Обновить профиль = поправить этот файл.
+* `engine/stats.py` — живые данные проектов из GitHub API (звёзды, число решённых
+  задач по сложности и источникам, код решений из `showcase`). Последний удачный снимок
+  кладётся в `assets/stats.json`; если API недоступен — сборка берёт его.
+* `engine/cards/divider.py` — разделитель секций `01 · PROFILE` / `02 · PROJECTS`:
+  линейка с тиками и бегущий блик.
+* `engine/cards/algorithms.py` — карточка `Algorithms` в стиле LeetCode: кольцо
+  easy/medium/hard, чипы источников, редактор по очереди «сабмитит» задачи из `showcase`
+  (Pending → Judging → Accepted + сложность из комментария `# O(...)` в решении).
+* `engine/cards/aura.py` — карточка темы Aura Dark: окно Logseq в самой теме,
+  TODO↔DONE, последний блок печатается и стирается (фразы `aura.typing`).
 * `engine/cards/nvim.py` — шапка: Neovim, который бесконечно редактирует `profile.py`
   (переход к строке через `j` / `/now` / `17G`, `ci"`, ввод, `:w`, `:!python %`)
   и neofetch-вывод в терминальном сплите справа.
@@ -36,4 +47,6 @@ JavaScript не используется (GitHub его вырезает).
 ## Автосборка
 
 `.github/workflows/profile.yml` пересобирает карточки при каждом пуше в `config/` или
-`engine/` и коммитит результат. Можно запустить и вручную: Actions → profile engine → Run.
+`engine/` и раз в день (живая статистика), коммитит результат. Сборка детерминирована
+(шрифт без метки времени), так что коммит появляется только при реальных изменениях.
+Можно запустить и вручную: Actions → profile engine → Run.

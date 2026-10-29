@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import random
 
-from ..kit import CW, FS, PAL, Timeline, esc, font_css, missing_glyphs, svg
+from ..kit import CW, FS, PAL, Timeline, body_fonts, esc, intervals, svg, tok_text
 
 W = 1000
 LH = 22
@@ -197,29 +197,7 @@ def schedule(cfg, now_idx: int, qcol: int, n_out: int):
     return S, P
 
 
-def intervals(changes: list[tuple[float, object]], P: float) -> dict:
-    """[(t, value)] state changes → {value: [(start, end), ...]}."""
-    ch = sorted(changes, key=lambda c: c[0])
-    out: dict = {}
-    for k, (t, v) in enumerate(ch):
-        end = ch[k + 1][0] if k + 1 < len(ch) else P + 1
-        if end > t:
-            out.setdefault(v, []).append((t, end))
-    return out
-
-
 # ── render ──────────────────────────────────────────────────────────────────
-def tok_text(x, y, tokens, extra=""):
-    spans = []
-    for tok in tokens:
-        text, col = tok[0], tok[1]
-        style = tok[2] if len(tok) > 2 else ""
-        a = ' font-weight="700"' if "b" in style else ""
-        a += ' font-style="italic"' if "i" in style else ""
-        spans.append(f'<tspan fill="{col}"{a}>{esc(text)}</tspan>')
-    return f'<text x="{x:.1f}" y="{y:.1f}"{extra}>{"".join(spans)}</text>'
-
-
 def render(cfg) -> str:
     code, now_idx, qcol = build_code(cfg)
     out_rows, now_rows = build_output(cfg)
@@ -396,16 +374,6 @@ def render(cfg) -> str:
     A(f'<rect x=".5" y=".5" width="{W-1}" height="{H-1}" rx="14" fill="none" stroke="{C["border"]}"/>')
 
     all_text = "".join(body) + "×·"
-    css = font_css(_plain(all_text), faces=((400, "normal"), (700, "normal"), (400, "italic")))
+    css = body_fonts(all_text, faces=((400, "normal"), (700, "normal"), (400, "italic")))
     css += ".blink{animation:blink 1.1s steps(1) infinite}@keyframes blink{50%{opacity:0}}"
-    miss = missing_glyphs(_plain(all_text))
-    if miss:
-        print(f"  ! нет в шрифте: {''.join(sorted(miss))}")
     return svg(W, H, f'{cfg["name"]} — {cfg["grade"]} {cfg["role"]}', css, "".join(defs), "".join(body))
-
-
-def _plain(markup: str) -> str:
-    """Characters that actually end up as text (rough: strip tags)."""
-    import re
-    import html
-    return html.unescape(re.sub(r"<[^>]+>", "", markup))
