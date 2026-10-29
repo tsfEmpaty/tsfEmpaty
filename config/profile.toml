@@ -1,0 +1,78 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# profile.toml — всё, что говорят карточки. Код движка трогать не нужно.
+# Пересобрать:  python -m engine build
+# ─────────────────────────────────────────────────────────────────────────────
+
+name  = "David Chapanyan"
+grade = "Middle+"                 # ← поменяй на новый грейд
+role  = "Backend Engineer"
+focus = "security-first, scalable systems"
+
+# GitHub-логин: нужен, чтобы в README были абсолютные ссылки с ?v=хэш
+# (так GitHub не показывает старую закэшированную картинку). Пусто = относительные пути.
+github_user = ""
+
+# Фразы, которые nvim по очереди вписывает в поле `now`.
+# В редакторе влезает до 41 символа, в терминале длинные переносятся на 2 строки.
+now = [
+  "shipping payment integrations",
+  "tuning Postgres query plans",
+  "wiring Kafka consumers",
+  "hardening auth flows",
+]
+
+# Группы стека: в коде идут одним кортежем, в neofetch-выводе — по строкам.
+[[stack]]
+label = "lang"
+items = ["Python"]
+
+[[stack]]
+label = "web"
+items = ["FastAPI", "Django", "Celery", "SQLAlchemy"]
+
+[[stack]]
+label = "data"
+items = ["PostgreSQL", "MySQL", "Redis"]
+
+[[stack]]
+label = "queue"
+items = ["Kafka", "RabbitMQ"]
+
+[[stack]]
+label = "infra"
+items = ["Docker", "k8s", "CI/CD"]
+
+[[stack]]
+label = "observe"
+items = ["Grafana", "Sentry", "ELK"]
+
+# Клавиши над редактором. color: teal | blue | violet | orange | pink | yellow | green | dark
+[[badges]]
+label = "lang"
+value = "Python first"
+color = "teal"
+
+[[badges]]
+label = "grade"
+value = "Middle+"
+color = "violet"
+
+[[badges]]
+label = "editor"
+value = "Neovim"
+color = "green"
+
+[[badges]]
+label = "loves"
+value = "Kafka · Redis"
+color = "orange"
+
+[[badges]]
+label = "mindset"
+value = "security-first"
+color = "pink"
+
+[[badges]]
+label = "status"
+value = "open to offers"
+color = "dark"
