@@ -23,12 +23,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@v6
         with:
-          python-version: "3.12"
-          cache: pip
-      - run: pip install -r requirements.txt
-      - run: python -m engine build
+          enable-cache: true
+      - run: uv sync --locked --no-dev      # Python из .python-version, зависимости из uv.lock
+      - run: uv run --no-sync python -m engine build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # выше лимит GitHub API
       - name: Commit regenerated cards

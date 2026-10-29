@@ -3,12 +3,16 @@
 Маленький движок на Python, который рисует анимированные SVG для README профиля.
 
 ```
-pip install -r requirements.txt
-python -m engine build                 # все карточки + обновить README
-python -m engine build --only nvim     # только одна карточка, README обновится только для неё
-python -m engine build --no-readme     # всё, но README не трогать
-python -m engine build --offline       # без GitHub API: цифры проектов из assets/stats.json
+uv sync                                       # Python 3.12 + зависимости из uv.lock
+uv run python -m engine build                 # все карточки + обновить README
+uv run python -m engine build --only nvim     # только одна карточка, README обновится только для неё
+uv run python -m engine build --no-readme     # всё, но README не трогать
+uv run python -m engine build --offline       # без GitHub API: цифры проектов из assets/stats.json
 ```
+
+Зависимости — в `pyproject.toml`, точные версии — в `uv.lock` (коммитится).
+Новая зависимость: `uv add <pkg>`. Playwright для проверки кадров — в dev-группе:
+`uv run playwright install chromium`.
 
 ## Как устроено
 
