@@ -95,10 +95,19 @@ showcase = [
 
 [aura]
 repo = "tsfEmpaty/logseq-aura-dark-theme"
-title = "Aura Dark for Logseq"
-# блок, который печатается и стирается по кругу; {stars} подставляется из API
+kicker = "Logseq theme"
+title = "Aura Dark"
+subtitle = "for Logseq"
+# описание слева, по строке (до 40 символов)
+about = [
+  "Deep purple dark theme for Logseq,",
+  "ported from the Aura Dark VS Code theme.",
+  "Whole UI, code blocks, bundled Nerd Font.",
+]
+# блок в превью, который печатается и стирается по кругу (до 40 символов);
+# {stars} подставляется из API
 typing = [
-  "Install: [[Marketplace]] > Themes > \"Aura Dark\"",
+  "Install: [[Marketplace]] > Themes",
   "Switch theme with `t i` #shortcut",
   "{stars} stars on #github so far",
 ]

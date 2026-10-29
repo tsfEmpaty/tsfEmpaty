@@ -10,7 +10,7 @@ from __future__ import annotations
 import math
 import re
 
-from ..kit import Timeline, body_fonts, esc, intervals, svg, tok_text
+from ..kit import Timeline, body_fonts, esc, intervals, star, svg, tok_text
 
 W = 1000
 LC = dict(
@@ -129,7 +129,7 @@ def render(cfg) -> str:
     A(f'<text x="{W - 24}" y="32" fill="{LC["fg2"]}" text-anchor="end" style="font-size:13px">'
       f'{meta["stars"]} · {esc(meta_txt)}</text>')
     sx = W - 24 - (len(meta_txt) + 3 + len(str(meta["stars"]))) * 13 * 0.6 - 10
-    A(_star(sx, 27, 7, LC["medium"]))
+    A(star(sx, 27, 7, LC["medium"]))
 
     # ── left panel: solved ring + sources ──
     A(f'<rect x="{LX}" y="{PY}" width="{LW}" height="{PH}" rx="10" fill="{LC["panel"]}"/>')
@@ -273,12 +273,3 @@ def render(cfg) -> str:
 
 def _overlap(a: list[tuple[float, float]], b: list[tuple[float, float]]) -> list[tuple[float, float]]:
     return [(max(x0, y0), min(x1, y1)) for x0, x1 in a for y0, y1 in b if max(x0, y0) < min(x1, y1)]
-
-
-def _star(cx: float, cy: float, r: float, col: str) -> str:
-    pts = []
-    for i in range(10):
-        ang = -math.pi / 2 + i * math.pi / 5
-        rr = r if i % 2 == 0 else r * 0.45
-        pts.append(f"{cx + rr * math.cos(ang):.1f},{cy + rr * math.sin(ang):.1f}")
-    return f'<polygon points="{" ".join(pts)}" fill="{col}"/>'

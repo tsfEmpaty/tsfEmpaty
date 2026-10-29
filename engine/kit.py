@@ -11,6 +11,7 @@ from __future__ import annotations
 import base64
 import html
 import io
+import math
 import re
 from pathlib import Path
 
@@ -155,6 +156,16 @@ def body_fonts(body: str, faces=((400, "normal"), (700, "normal"))) -> str:
     if miss:
         print(f"  ! нет в шрифте: {''.join(sorted(miss))}")
     return font_css(text, faces)
+
+
+def star(cx: float, cy: float, r: float, col: str) -> str:
+    """Five-point star (the font subset has no ★)."""
+    pts = []
+    for i in range(10):
+        ang = -math.pi / 2 + i * math.pi / 5
+        rr = r if i % 2 == 0 else r * 0.45
+        pts.append(f"{cx + rr * math.cos(ang):.1f},{cy + rr * math.sin(ang):.1f}")
+    return f'<polygon points="{" ".join(pts)}" fill="{col}"/>'
 
 
 def svg(w: float, h: float, label: str, css: str, defs: str, body: str) -> str:
