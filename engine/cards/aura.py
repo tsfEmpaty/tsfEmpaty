@@ -115,12 +115,12 @@ def render(cfg) -> str:
     A(f'<text x="{LX - 2}" y="194" fill="{AU["purple"]}" style="font-size:38px">{esc(spec["subtitle"])}</text>')
     for i, line in enumerate(spec["about"]):
         A(f'<text x="{LX}" y="{238 + i * 22}" fill="{AU["secondary"]}" style="font-size:14px">{esc(line)}</text>')
-    stats = [("7", "colors"), ("2", "token sets"), ("1", "nerd font"), (str(meta["stars"]), "stars")]
+    stats = [("7", "colors"), ("1", "click install"), ("0", "fonts to install"), (str(meta["stars"]), "stars")]
     sx = LX
     for num, lab in stats:
         A(f'<text x="{sx}" y="320" fill="{AU["text"]}" font-weight="700" style="font-size:28px">{num}</text>'
           f'<text x="{sx}" y="340" fill="{AU["muted"]}" style="font-size:10px;letter-spacing:2px">{lab.upper()}</text>')
-        sx += max(len(lab) * 8, len(num) * 17) + 30
+        sx += max(len(lab) * 8, len(num) * 17) + 24
     A(f'<text x="{LX}" y="{WY + WH - 4}" fill="{AU["muted"]}" style="font-size:12px">github.com/{esc(spec["repo"])}</text>')
 
     # ── right: a Logseq window in the theme ──
