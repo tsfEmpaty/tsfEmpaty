@@ -23,16 +23,22 @@ def render(cfg) -> str:
     badges = cfg.get("badges", [])
     cw = VAL_FS * 0.6
     widths = [max(len(b["value"]) * cw, len(b["label"]) * LBL_FS * 0.6) + 30 for b in badges]
-    # wrap into rows that fit
-    rows, cur, cur_w = [], [], 0.0
-    for b, w in zip(badges, widths):
-        if cur and cur_w + GAP + w > W - 40:
-            rows.append(cur)
-            cur, cur_w = [], 0.0
-        cur.append((b, w))
-        cur_w += (GAP if len(cur) > 1 else 0) + w
-    if cur:
-        rows.append(cur)
+    # wrap into as few rows as fit, then balance them so no row is left with a lone key
+    def wrap(limit):
+        rows, cur, cur_w = [], [], 0.0
+        for b, w in zip(badges, widths):
+            if cur and cur_w + GAP + w > limit:
+                rows.append(cur)
+                cur, cur_w = [], 0.0
+            cur.append((b, w))
+            cur_w += (GAP if len(cur) > 1 else 0) + w
+        return rows + [cur] if cur else rows
+
+    rows = wrap(W - 40)
+    n_rows, limit = len(rows), (sum(widths) + GAP * len(widths)) / max(len(rows), 1)
+    while len(wrap(limit)) > n_rows:
+        limit += 10
+    rows = wrap(limit)
 
     n = len(badges)
     step, period = 0.9, max(len(badges), 1) * 0.9 + 3.0

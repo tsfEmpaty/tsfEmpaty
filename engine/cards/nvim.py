@@ -45,6 +45,7 @@ def build_code(cfg) -> tuple[list[list[tuple]], int, int]:
     s = lambda v: [('"', STR), (v, STR), ('"', STR)]
     L.append(field("name", "str", s(cfg["name"])))
     L.append(field("grade", "str", s(cfg["grade"])))
+    L.append(field("exp", "str", s(cfg["experience"])))
     L.append(field("role", "str", s(cfg["role"])))
     L.append(field("stack", "tuple", [("(", PUN)]))
     items = [i for g in cfg["stack"] for i in g["items"]]
@@ -91,7 +92,7 @@ def build_output(cfg) -> tuple[list[dict], dict[str, list[dict]]]:
     vw = TERM_COLS - LABEL_COLS
     rows: list[dict] = [
         dict(kind="name", text=cfg["name"].upper()),
-        dict(kind="text", parts=[(f'{cfg["grade"]} · {cfg["role"]}', C["magenta"], "b")]),
+        dict(kind="text", parts=[(f'{cfg["grade"]} · {cfg["role"]} · {cfg["experience"]}', C["magenta"], "b")]),
         dict(kind="rule"),
     ]
     for g in cfg["stack"]:

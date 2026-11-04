@@ -1,12 +1,13 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # profile.toml — всё, что говорят карточки. Код движка трогать не нужно.
-# Пересобрать:  python -m engine build
+# Пересобрать:  uv run python -m engine build
 # ─────────────────────────────────────────────────────────────────────────────
 
-name  = "David Chapanyan"
-grade = "Middle+"                 # ← поменяй на новый грейд
-role  = "Backend Engineer"
-focus = "security-first, scalable systems"
+name       = "David Chapanyan"
+grade      = "Senior"
+role       = "Backend Engineer"
+experience = "5+ years"
+focus      = "payments, ledgers, event-driven"
 
 # GitHub-логин: нужен, чтобы в README были абсолютные ссылки с ?v=хэш
 # (так GitHub не показывает старую закэшированную картинку). Пусто = относительные пути.
@@ -15,28 +16,28 @@ github_user = ""
 # Фразы, которые nvim по очереди вписывает в поле `now`.
 # В редакторе влезает до 41 символа, в терминале длинные переносятся на 2 строки.
 now = [
-  "shipping payment integrations",
-  "tuning Postgres query plans",
-  "wiring Kafka consumers",
-  "hardening auth flows",
+  "moving accruals from batch to Kafka",
+  "idempotent ledgers in PostgreSQL",
+  "reconciling payouts with providers",
+  "p95 accrual lag: 50 min to 30 s",
 ]
 
 # Группы стека: в коде идут одним кортежем, в neofetch-выводе — по строкам.
 [[stack]]
 label = "lang"
-items = ["Python"]
+items = ["Python", "asyncio", "Pydantic"]
 
 [[stack]]
 label = "web"
-items = ["FastAPI", "Django", "Celery", "SQLAlchemy"]
+items = ["FastAPI", "Django/DRF", "SQLAlchemy"]
 
 [[stack]]
 label = "data"
-items = ["PostgreSQL", "MySQL", "Redis"]
+items = ["PostgreSQL", "Redis", "ClickHouse"]
 
 [[stack]]
 label = "queue"
-items = ["Kafka", "RabbitMQ"]
+items = ["Kafka", "RabbitMQ", "Celery"]
 
 [[stack]]
 label = "infra"
@@ -44,7 +45,7 @@ items = ["Docker", "k8s", "CI/CD"]
 
 [[stack]]
 label = "observe"
-items = ["Grafana", "Sentry", "ELK"]
+items = ["Grafana", "OpenTelemetry", "Sentry"]
 
 # Клавиши над редактором. color: teal | blue | violet | orange | pink | yellow | green | dark
 [[badges]]
@@ -54,28 +55,33 @@ color = "teal"
 
 [[badges]]
 label = "grade"
-value = "Middle+"
+value = "Senior"
 color = "violet"
 
 [[badges]]
-label = "editor"
-value = "Neovim"
-color = "green"
+label = "experience"
+value = "5+ years"
+color = "blue"
 
 [[badges]]
-label = "loves"
-value = "Kafka · Redis"
+label = "domain"
+value = "payments · fintech"
+color = "yellow"
+
+[[badges]]
+label = "daily driver"
+value = "Kafka · PostgreSQL"
 color = "orange"
 
 [[badges]]
-label = "mindset"
-value = "security-first"
-color = "pink"
+label = "security"
+value = "first"
+color = "dark"
 
 [[badges]]
-label = "status"
-value = "open to offers"
-color = "dark"
+label = "mindset"
+value = "idempotent by design"
+color = "pink"
 
 # ── проекты ──────────────────────────────────────────────────────────────────
 # Цифры (решённые задачи, звёзды) и код решений движок берёт из GitHub API при сборке;
